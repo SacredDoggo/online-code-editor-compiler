@@ -9,20 +9,19 @@ import { useState } from "react";
 export default function Home() {
 	const [code, setCode] = useState<string>(lang.cpp.boilerplate);
 	const onChange = (e: string) => {setCode(e);}
-	const onSubmit = () => {
-		const response = fetch("/api/executecode/", {
+	const onSubmit = async () => {
+		const response = await fetch("/api/executecode/", {
 			method: "POST",
-			headers: { "content-type" : "application/json" },
-			body: {
+			headers: { "Content-type" : "application/json" },
+			body: JSON.stringify({
 				"lang": "CPP14",
-				"source": {code},
+				"source": code,
 				"input": "",
-				"memory_limit": 243232,
-				"time_limit": 5,
-			}
+				"callback": "",
+			})
 		});
-
-		console.log(response);
+		const res = await response.json();
+		console.log(res);
 	}
 
 	return (
@@ -32,11 +31,8 @@ export default function Home() {
 					<div className="w-1/2 border-2 border-pink-600"><LangChoose /></div>
 					<div className="w=1/2 border-2 border-pink-600 "><DownloadCode /> </div>
 				</div>
-				<div className="border-2 border-green-600">
-					<Editor 
-						onChange={onChange}
-						code={code}
-					/>
+				<div className="border-2 border-green-600 w-full">
+					<textarea className="w-full" onChange={(e: any) => {setCode(e);}} value={code} />
 				</div>
 				<div>
 					<button type="button" onClick={onSubmit} className="outline-none bg-transparent border-none">
