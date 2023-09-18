@@ -1,4 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
+import * as dotenv from 'dotenv';
+import { time } from 'console';
+
+dotenv.config();
 
 interface body {
     "lang": string, // language
@@ -16,7 +20,52 @@ interface header {
     "client-secret": string | undefined
 }
 
+interface firstRes {
+    'request_status': {
+        'code': string,
+        'message': string,
+    }
+    'he_id': string,
+    'result': {
+        'run_status': {
+            'status': string
+        },
+        'compile_status': string
+    },
+    'contest': string,
+    'status_update_url': string
+}
 
+interface secondRes {
+    "request_status": {
+      "message": string,
+      "code": string
+    },
+    "errors": {},
+    "he_id": string,
+    "status_update_url": string,
+    "context": string,
+    "result": {
+      "run_status"?: {
+        "memory_used": string,
+        "status": string,
+        "time_used": string,
+        "signal": string,
+        "exit_code": string,
+        "status_detail": string,
+        "stderr": string,
+        "output": string,
+        "request_NOT_OK_reason": string,
+        "request_OK": string
+      },
+      "compile_status": string
+    }
+  }
+
+interface gotError {
+    "message": string,
+    "error" : Object 
+}
 /*
 {'result': 
     {'run_status': 
@@ -28,11 +77,15 @@ interface header {
     'request_status': {'code': 'REQUEST_QUEUED', 'message': 'Your request has been queued in the evaluation pipeline'}
 }
 */
+
+function isError(object: any): object is gotError {
+    return 'message' in object;
+}
+
 export async function POST(request: Request) {
 
     try {
         const req = await request.json();
-        console.log(req.code);
         
         const newBody:body = {
             "lang": req.lang,
@@ -54,11 +107,60 @@ export async function POST(request: Request) {
             method: "POST",
             body: JSON.stringify(newBody),
             headers: requestHeaders,
-        });
-        const res = await response.json();
-        return NextResponse.json(res);
+        }).then(response => response.json());
 
-    } catch (error: any) {
-        return NextResponse.json({ name: "Error", error: error });
+        if (response.message) 
+        {            
+            return NextResponse.json(response);
+        }
+
+        // Now we wait
+        const timer = (ms:number) => new Promise(res => setTimeout(res, ms));
+        var 
+            REQUEST_QUEUED = 'REQUEST_QUEUED',
+            CODE_COMPILED = 'CODE_COMPILED',
+            REQUEST_COMPLETED = 'REQUEST_COMPLETED',
+            REQUEST_FAILED = 'REQUEST_FAILED';
+
+        var executionCount = 0;
+        while(executionCount < 5){
+            const response_2 = await fetch(response.status_update_url, {
+                headers: requestHeaders
+            }).then(response_2 => response_2.json());            
+
+            if (response_2.request_status.code === REQUEST_QUEUED)
+            {
+                // do smth i guess
+            }
+            else if (response_2.request_status.code === CODE_COMPILED) 
+            {
+                // how the hell will i inform the front end that its compiled, i can use sockets
+                if (response_2.result.compile_status === "OK") {
+                    // ok good
+                }
+                else {
+                    // does this make sense 
+                    // return NextResponse.json(response_2);
+                }
+            }
+            else if (response_2.request_status.code === REQUEST_COMPLETED)
+            {
+                return NextResponse.json(response_2);
+            }
+            else if (response_2.request_status.code === REQUEST_FAILED)
+            {
+                return NextResponse.json(response_2);
+            }
+
+            console.log(executionCount);
+            executionCount++;
+            await timer(1000);
+        }
+
+        throw new Error('unable to resolve data')
+    } catch (err: any) {
+        console.log(Object.keys(err));
+        
+        return NextResponse.json({name: 'error', error: err});
     }
 }
