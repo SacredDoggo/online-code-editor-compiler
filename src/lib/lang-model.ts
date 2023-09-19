@@ -1,10 +1,10 @@
 interface langModel {
-    'hackereathapi': string;
+    'hackerearthapi': string;
     'mode-ace': string;
     'boilerplate': string;
 }
 
-const lang = {
+const lang:{[key: string] : langModel} = {
     'c' : {
         'hackerearthapi': 'C',
         'mode-ace': 'c_cpp',
