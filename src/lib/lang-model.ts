@@ -8,7 +8,7 @@ const lang_model:{[key: string] : langModel} = {
     'C' : {
         'hackerearthapi': 'C',
         'mode_ace': 'c_cpp',
-        'boilerplate' : '#include<stdio.h>\n\nint main()\n{\n\n\tprrintf("Hello, World! from C);\n\treturn 0;\n}'
+        'boilerplate' : '#include<stdio.h>\n\nint main()\n{\n\n\tprintf("Hello, World! from C");\n\treturn 0;\n}'
     },
     'C++ 14' : {
         'hackerearthapi': 'CPP14',
