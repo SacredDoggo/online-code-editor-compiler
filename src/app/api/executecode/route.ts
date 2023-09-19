@@ -90,7 +90,7 @@ export async function POST(request: Request) {
         const newBody:body = {
             "lang": req.lang,
             "source": req.source,
-            "input": req.source,
+            "input": req.input,
             'time_limit': 5,
             'memory_limit': 246323,
             'callback': req.callback,
@@ -115,6 +115,7 @@ export async function POST(request: Request) {
         }
 
         // Now we wait
+        const waitTime = 10; // 10 seconds
         const timer = (ms:number) => new Promise(res => setTimeout(res, ms));
         var 
             REQUEST_QUEUED = 'REQUEST_QUEUED',
@@ -123,7 +124,7 @@ export async function POST(request: Request) {
             REQUEST_FAILED = 'REQUEST_FAILED';
 
         var executionCount = 0;
-        while(executionCount < 5){
+        while(executionCount < waitTime){
             const response_2 = await fetch(response.status_update_url, {
                 headers: requestHeaders
             }).then(response_2 => response_2.json());            
