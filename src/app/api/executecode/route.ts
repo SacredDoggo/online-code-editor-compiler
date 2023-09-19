@@ -140,7 +140,7 @@ export async function POST(request: Request) {
                 }
                 else {
                     // does this make sense 
-                    // return NextResponse.json(response_2);
+                    return NextResponse.json(response_2);
                 }
             }
             else if (response_2.request_status.code === REQUEST_COMPLETED)
@@ -157,9 +157,9 @@ export async function POST(request: Request) {
             await timer(1000);
         }
 
-        throw new Error('unable to resolve data')
+        throw new Error('unable to resolve data');
     } catch (err: any) {
-        console.log(Object.keys(err));
+        console.log(err);
         
         return NextResponse.json({name: 'error', error: err});
     }
