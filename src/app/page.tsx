@@ -4,6 +4,7 @@ import DownloadCode from "@/components/DownloadCode";
 import Editor from "@/components/Editor";
 import LangChoose from "@/components/LangChoose";
 import ThemeChoose from "@/components/ThemeChoose";
+import Input from "@/components/Input";
 import lang_model from "@/lib/lang-model";
 import theme_model from "@/lib/theme-model";
 import { useEffect, useState } from "react";
@@ -12,6 +13,7 @@ export default function Home() {
 
 	const [language, setLanguage] = useState([{ value: 1, label: 'C' }]);
 	const [chosenTheme, setChosenTheme] = useState([{ value: 1, label: 'Monokai' }]);
+	const [input, setInput] = useState('');
 
 	const [code, setCode] = useState<string>(lang_model[language[0].label].boilerplate);
 	
@@ -54,13 +56,13 @@ export default function Home() {
 	}
 
 	return (
-		<div className="flex w-full h-full m-auto border-2 border-black justify-center">
-			<div className="w-full lg:w-3/4 lg:max-w-2/3 mx-5 p-2 border-2 border-black bg-[#f5f5f5]">
+		<div className="flex w-full h-full m-auto border-4 border-black justify-center">
+			<div className="w-full lg:w-3/4 lg:max-w-2/3 mx-5 p-2 border-2 border-black bg-[#dedede]">
 				<div className="flex">
-					<div className="w-1/4 border-2 border-pink-600">
+					<div className="w-1/4 border-0 border-pink-600">
 						<LangChoose value={language} onChange={(language: any) => setLanguage(language)} />
 					</div>
-					<div className="w-1/4 border-2 border-pink-600">
+					<div className="w-1/4 border-0 border-pink-600">
 						<ThemeChoose value={chosenTheme} onChange={(chosenTheme: any) => setChosenTheme(chosenTheme)}/>
 					</div>
 					<div className="flex w-1/2 border-2 border-pink-600 justify-end">
@@ -88,9 +90,9 @@ export default function Home() {
 						}}
 					/>
 				</div>
-				<div>
-					<button type="button" onClick={onSubmit} className="outline-none bg-transparent border-none">
-						soobmit
+				<div className="border-2 border-blue-600 text-right px-10 py-2">
+					<button type="button" onClick={onSubmit} className="bg-green-500 text-sm text-white px-5 py-2 rounded-md hover:bg-green-600">
+						Submit
 					</button>
 				</div>
 			</div>
