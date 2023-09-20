@@ -16,11 +16,13 @@ export default function Home() {
 	const [input, setInput] = useState('');
 
 	const [code, setCode] = useState<string>(lang_model[language[0].label].boilerplate);
+
+	const [compiling, setCompiling] = useState(false);
 	
 	const [mode, setMode] = useState(lang_model[language[0].label].mode_ace);
 	const [theme, setTheme] = useState("monokai");
 	const [fontSize, setFontSize] = useState(14);
-	const [showPrintMargin, setShowPrintMargin] = useState(true);
+	const [showPrintMargin, setShowPrintMargin] = useState(false);
 	const [showGutter, setShowGutter] = useState(true);
 	const [highlightActiveLine, setHighlightActiveLine] = useState(true);
 	const [options, setOptions] = useState({
@@ -41,17 +43,19 @@ export default function Home() {
 	}, [chosenTheme]);
 
 	const onSubmit = async () => {
+		setCompiling(true);
 		const response: any = await fetch("/api/executecode/", {
 			method: "POST",
 			headers: { "Content-type": "application/json" },
 			body: JSON.stringify({
 				"lang": lang_model[language[0].label].hackerearthapi,
 				"source": code,
-				"input": "",
+				"input": input,
 				"callback": "",
 			})
 		});
 		const res = await response.json();
+		setCompiling(false);
 		alert(JSON.stringify(res.result.run_status));
 	}
 
@@ -91,9 +95,13 @@ export default function Home() {
 					/>
 				</div>
 				<div className="border-2 border-blue-600 text-right px-10 py-2">
-					<button type="button" onClick={onSubmit} className="bg-green-500 text-sm text-white px-5 py-2 rounded-md hover:bg-green-600">
-						Submit
+					<button type="button" onClick={onSubmit} className="bg-green-500 text-sm text-white px-5 py-2 rounded-md hover:bg-green-600" disabled={compiling}>
+						{compiling ? 'Compiling...' : 'Submit'}
 					</button>
+				</div>
+				<div className="border-2 border-blue-600 py-2">
+					<span className="text-slate-800">Input: </span>
+					<Input value={input} onChange={(e: any) => setInput(e.target.value)}/>
 				</div>
 			</div>
 		</div>
