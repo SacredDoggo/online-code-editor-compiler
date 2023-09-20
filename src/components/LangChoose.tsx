@@ -22,6 +22,9 @@ const LangChoose: React.FC<InputProps> = ({ value, onChange }) => {
     <Select
 	style={{
         width: "100%",
+		background: 'white',
+		borderRadius: '0.3em',
+		paddingLeft: '1em',
       }}
 	  values={value}
       options={options}
