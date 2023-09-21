@@ -64,10 +64,10 @@ export default function Home() {
 				"callback": "",
 			})
 		}).then(res => res.json());
-		setCompiling(false);
 		const resp_part3 = await fetch(response.result.run_status.output).then(res => res.text());
 		response.result.run_status.output = resp_part3;
 		setOutput(response.result.run_status);
+		setCompiling(false);
 	}
 
 	return (
