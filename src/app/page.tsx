@@ -1,19 +1,29 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 import DownloadCode from "@/components/DownloadCode";
 import Editor from "@/components/Editor";
 import LangChoose from "@/components/LangChoose";
 import ThemeChoose from "@/components/ThemeChoose";
 import Input from "@/components/Input";
+import Output from "@/components/Output";
+
 import lang_model from "@/lib/lang-model";
 import theme_model from "@/lib/theme-model";
-import { useEffect, useState } from "react";
 
 export default function Home() {
 
 	const [language, setLanguage] = useState([{ value: 1, label: 'C' }]);
 	const [chosenTheme, setChosenTheme] = useState([{ value: 1, label: 'Monokai' }]);
 	const [input, setInput] = useState('');
+	const [output, setOutput] = useState({
+		output : "", 
+		status : "",
+        status_detail : "",
+        time_used : 0,
+        memory_used : 0
+	});
 
 	const [code, setCode] = useState<string>(lang_model[language[0].label].boilerplate);
 
@@ -53,10 +63,11 @@ export default function Home() {
 				"input": input,
 				"callback": "",
 			})
-		});
-		const res = await response.json();
+		}).then(res => res.json());
 		setCompiling(false);
-		alert(JSON.stringify(res.result.run_status));
+		const resp_part3 = await fetch(response.result.run_status.output).then(res => res.text());
+		response.result.run_status.output = resp_part3;
+		setOutput(response.result.run_status);
 	}
 
 	return (
@@ -99,9 +110,14 @@ export default function Home() {
 						{compiling ? 'Compiling...' : 'Submit'}
 					</button>
 				</div>
-				<div className="border-2 border-blue-600 py-2">
+				<div className="flex">
+				<div className="border-2 border-blue-600 py-2 w-1/2">
 					<span className="text-slate-800">Input: </span>
 					<Input value={input} onChange={(e: any) => setInput(e.target.value)}/>
+				</div>
+				<div className="border-2 border-blue-600 py-2 w-1/2">
+					<Output output={output} />
+				</div>
 				</div>
 			</div>
 		</div>
