@@ -23,6 +23,7 @@ const Output: React.FC<InputProps> = ({ output }) => {
           rows={rows}
           value={output.output}
           className="w-full resize-none rounded-sm text-sm py-0.5"
+          readOnly
         ></textarea>
       </div>
     </div>
