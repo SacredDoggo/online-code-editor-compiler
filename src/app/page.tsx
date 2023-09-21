@@ -82,7 +82,7 @@ export default function Home() {
 					</div>
 					<div className="flex w-1/2 border-2 border-pink-600 justify-end">
 						<div className="mx-10 border-0 my-auto border-green-600">
-							<DownloadCode /> 
+							<DownloadCode code={code} lang_extension={lang_model[language[0].label].extension} /> 
 						</div>
 					</div>
 				</div>
