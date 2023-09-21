@@ -1,6 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import * as dotenv from 'dotenv';
-import { time } from 'console';
 
 dotenv.config();
 
