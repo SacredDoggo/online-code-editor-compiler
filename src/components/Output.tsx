@@ -97,3 +97,25 @@ export default Output;
     }
 }
 */
+/* Runtime error
+{
+    "he_id":"cf2307f0-b177-413f-b2b1-65b7368a872a",
+    "request_status":{
+        "code":"REQUEST_COMPLETED",
+        "message":"Your request has been completed successfully"
+    },
+    "status_update_url":"https://api.hackerearth.com/v4/partner/code-evaluation/submissions/cf2307f0-b177-413f-b2b1-65b7368a872a/",
+    "result":
+    {
+        "compile_status":"OK",
+        "run_status":
+        {
+            "output":"",
+            "status":"RE",
+            "status_detail":"SIGSEGV",
+            "time_used":0.026129,
+            "memory_used":10464
+        }
+    }
+}
+*/
