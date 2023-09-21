@@ -14,7 +14,7 @@ const Output: React.FC<InputProps> = ({ output }) => {
   return (
     <div>
       <div className="flex w-full justify-between px-2">
-        <span>Status: '{output.status}'</span>
+        <span>{`Status: '${output.status}'`}</span>
         <span>Time: {output.time_used}</span>
         <span>Memory: {output.memory_used}</span>
       </div>
