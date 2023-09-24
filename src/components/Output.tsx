@@ -1,41 +1,54 @@
+import rtError from "@/lib/error-model";
 import { useEffect, useState } from "react";
 
 interface InputProps {
-  result: {
-    compile_status: string;
-    run_status: {
-      output: string;
-      status: string;
-      status_detail: string;
-      time_used: number;
-      memory_used: number;
+    result: {
+        compile_status: string;
+        run_status: {
+            output: string;
+            status: string;
+            status_detail: string;
+            time_used: number;
+            memory_used: number;
+            stderr?: string;
+        };
     };
-  };
 }
 
 const Output: React.FC<InputProps> = ({ result }) => {
-  const rows = 3;
-  const [someError, setSomeError] = useState(result.compile_status != 'OK');
-  useEffect(() => {
-    setSomeError(result.compile_status != 'OK');
-  }, [result])
-  return (
-    <div>
-      <div className="flex w-full justify-between px-2">
-        <span>{`Status: '${result.run_status.status}'`}</span>
-        <span>Time: {result.run_status.time_used}</span>
-        <span>Memory: {result.run_status.memory_used}</span>
-      </div>
-      <div>
-        <textarea
-          className={`w-full resize-none rounded-sm text-sm py-0.5 ${someError ? 'bg-red-200 text-red-500' : ''}`}
-          rows={rows}
-          value={someError ? result.compile_status : result.run_status.output}
-          readOnly
-        />
-      </div>
-    </div>
-  );
+    const rows = 3;
+    const [output, setOutput] = useState("");
+    const [someCompileError, setSomeCompileError] = useState(result.compile_status != "OK");
+    const [someRuntimeError, setSomeRuntimeError] = useState(result.run_status.status != "AC" && result.run_status.status != "");
+    useEffect(() => {
+        setSomeCompileError(result.compile_status != "OK");
+        setSomeRuntimeError(result.run_status.status != "AC" && result.run_status.status != "");
+        if (result.compile_status == "OK" && result.run_status.status != "AC" && result.run_status.status != "") {
+            setOutput((result.run_status.output == '' ? '' : result.run_status.output + '\n') + rtError[result.run_status.status][result.run_status.status_detail] + (result.run_status.stderr != undefined ? "\n" + result.run_status.stderr : ''));
+        } else {
+            setOutput(result.run_status.output);
+        }
+    }, [result]);
+    return (
+        <div>
+            <div className="flex w-full justify-between px-2">
+                <span>{`Status: '${result.run_status.status}'`}</span>
+                <span>Time: {result.run_status.time_used}</span>
+                <span>Memory: {result.run_status.memory_used}</span>
+            </div>
+            <div>
+                <textarea
+                    className={`w-full resize-none rounded-sm text-sm py-0.5 ${someCompileError || someRuntimeError
+                        ? "bg-red-200 text-red-500"
+                        : ""
+                        }`}
+                    rows={rows}
+                    value={someCompileError ? result.compile_status : output}
+                    readOnly
+                />
+            </div>
+        </div>
+    );
 };
 
 export default Output;
@@ -116,6 +129,20 @@ export default Output;
             "time_used":0.026129,
             "memory_used":10464
         }
+    }
+}
+
+
+{
+    "compile_status":"OK",
+    "run_status":
+    {
+        "output":"",
+        "status":"RE",
+        "status_detail":"SIGABRT",
+        "time_used":0.009625,
+        "memory_used":2,
+        "stderr":"terminate called after throwing an instance of 'std::bad_alloc'\n  what():  std::bad_alloc\n"
     }
 }
 */
