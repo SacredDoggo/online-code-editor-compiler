@@ -1,4 +1,4 @@
-import { download } from "@/images";
+import { download } from "@/assets";
 import { filesaver } from "@/utils/filesaver";
 
 interface InputProps {
