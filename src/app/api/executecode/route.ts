@@ -152,15 +152,12 @@ export async function POST(request: Request) {
                 return NextResponse.json(response_2);
             }
 
-            console.log(executionCount);
             executionCount++;
             await timer(1000);
         }
 
         throw new Error('unable to resolve data');
-    } catch (err: any) {
-        console.log(err);
-        
+    } catch (err: any) {        
         return NextResponse.json({name: 'error', error: err});
     }
 }
