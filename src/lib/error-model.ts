@@ -1,19 +1,4 @@
-interface error_model {
-    'AC': { 'NA': string; };
-    'MLE': { 'NA': string; };
-    'TLE': { 'NA': string; };
-    'RE': {
-        'SIGXFSZ': string;
-        'SIGSEGV': string;
-        'SIGFPE': string;
-        'SIGBUS': string;
-        'SIGABRT': string;
-        'NZEC': string;
-        'OTHER': string;
-    }
-}
-
-const rtError : error_model = {
+const rtError : {[key:string]: any} = {
     AC: { NA: 'Accepted. The code executed successfully.' },
     MLE: { NA: 'Memory Limit Exceeded. Execution of the compiled code used more memory that the memory limit' },
     TLE: { NA: 'Time Limit Exceeded. Execution of the compiled code took more time than the passed time limit' },
