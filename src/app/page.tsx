@@ -79,21 +79,21 @@ export default function Home() {
 
     return (
         <div className="flex w-full h-full m-auto border-0 border-black justify-center">
-            <div className="w-full lg:w-3/4 lg:max-w-2/3 mx-5 p-2 border-0 border-black bg-[#dedede]">
-                <div className="flex">
-                    <div className="w-1/4 border-0 border-pink-600">
+            <div className="w-full lg:max-w-4xl xl:max-w-5xl mx-5 p-2 border-0 border-black bg-[#dedede]">
+                <div className="sm:flex">
+                    <div className="sm:w-1/4 border-0 border-pink-600">
                         <LangChoose
                             value={language}
                             onChange={(language: any) => setLanguage(language)}
                         />
                     </div>
-                    <div className="w-1/4 border-0 border-pink-600">
+                    <div className="sm:w-1/4 border-0 border-pink-600">
                         <ThemeChoose
                             value={chosenTheme}
                             onChange={(chosenTheme: any) => setChosenTheme(chosenTheme)}
                         />
                     </div>
-                    <div className="flex w-1/2 justify-end relative">
+                    <div className="flex w-1/2 justify-end">
                         <div className="mx-10 border-0 my-auto border-green-600">
                             <DownloadCode
                                 code={code}
@@ -134,15 +134,15 @@ export default function Home() {
                         {compiling ? "Compiling..." : "Submit"}
                     </button>
                 </div>
-                <div className="lg:flex">
-                    <div className="border-0 border-blue-600 py-2 mr-1 w-full lg:w-1/2 xl:w-1/2">
+                <div className="xl:flex">
+                    <div className="border-0 border-blue-600 py-2 xl:mr-1 w-full xl:w-1/2">
                         <span className="text-slate-800">Input: </span>
                         <Input
                             value={input}
                             onChange={(e: any) => setInput(e.target.value)}
                         />
                     </div>
-                    <div className="border-0 border-blue-600 py-2 ml-1 w-full lg:w-1/2 xl:w-1/2">
+                    <div className="border-0 border-blue-600 py-2 xl:ml-1 w-full xl:w-1/2">
                         <Output result={output} />
                     </div>
                 </div>
